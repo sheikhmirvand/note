@@ -5,4 +5,8 @@ export class AuthRepo {
     async registerUserRepo({ email, password, userName }: registerInterFace) {
         return await User.create({ userName, email, password });
     }
+
+    async findOneUserWithEmailForAuth(email: string) {
+        return await User.findOne({ email });
+    }
 }
