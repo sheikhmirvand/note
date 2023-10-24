@@ -42,7 +42,7 @@ export class AuthController {
             // set token in cookie
             saveCookieService(res, <string>token);
 
-            res.json({ user, token });
+            res.status(200).json({ user, token });
         } catch (error) {
             if (error instanceof Error)
                 return res.status(500).json({ message: error.message });
@@ -78,7 +78,7 @@ export class AuthController {
             // save token in cookie
             saveCookieService(res, <string>token);
 
-            res.json({ user, token });
+            res.status(200).json({ user, token });
         } catch (error) {
             if (error instanceof Error)
                 return res.status(500).json({ message: error.message });
