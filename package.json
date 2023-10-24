@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "jest": {
+    "moduleFileExtensions": ["js", "jsx"],
+    "moduleDirectories": ["node_modules", "bower_components", "src"]
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node dist/server",
     "start:dev": "nodemon dist/server",
     "build": "tsc",
@@ -13,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.23.2",
     "@types/jsonwebtoken": "^9.0.4",
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
@@ -25,12 +30,17 @@
     "mongoose": "^7.6.3"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.23.2",
     "@types/bcrypt": "^5.0.1",
     "@types/cors": "^2.8.15",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.20",
     "@types/express-validator": "^3.0.0",
+    "@types/jest": "^29.5.6",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^20.8.7"
+    "@types/node": "^20.8.7",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
   }
 }

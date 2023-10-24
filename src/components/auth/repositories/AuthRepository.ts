@@ -1,4 +1,4 @@
-import User from "../../user/router/userModel";
+import User from "../../user/models/userModel";
 import { registerInterFace } from "./IAuthRepository";
 
 export class AuthRepo {

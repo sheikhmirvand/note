@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { AuthRepo } from "../repositories/AuthRepository";
 import { validationResult } from "express-validator";
-import { hashService } from "../../../services/hashService";
-import { genrateToken } from "../../../services/tokenService";
+import { compareService, hashService } from "../../../services/hashService";
+import { genrateTokenService } from "../../../services/tokenService";
+import { saveCookieService } from "../../../services/cookieService";
 
 export class AuthController {
     private readonly authReo: AuthRepo;
@@ -36,16 +37,12 @@ export class AuthController {
             });
 
             // genrate token
-            const token = await genrateToken(user._id);
+            const token = await genrateTokenService(user._id);
 
             // set token in cookie
-            res.cookie("token", token, {
-                httpOnly: true,
-                sameSite: "strict",
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-            });
+            saveCookieService(res, <string>token);
 
-            res.send({ user, token });
+            res.json({ user, token });
         } catch (error) {
             if (error instanceof Error)
                 return res.status(500).json({ message: error.message });
@@ -54,6 +51,34 @@ export class AuthController {
 
     login = async (req: Request, res: Response) => {
         try {
+            // get data
+            const { email, password } = req.body;
+            // check data from body
+            if (!email || !password)
+                return res.status(400).json({ message: "complate all field" });
+
+            // find user from data base
+            const user = await this.authReo.findOneUserWithEmailForAuth(email);
+            // check for exists user
+            if (!user)
+                return res
+                    .status(404)
+                    .json({ message: "user not found register first" });
+
+            // check password
+            const isMatch = compareService(password, user.password);
+            if (!isMatch)
+                return res
+                    .status(400)
+                    .json({ message: "email or password not valid" });
+
+            // genrate token
+            const token = await genrateTokenService(user._id);
+
+            // save token in cookie
+            saveCookieService(res, <string>token);
+
+            res.json({ user, token });
         } catch (error) {
             if (error instanceof Error)
                 return res.status(500).json({ message: error.message });

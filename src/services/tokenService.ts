@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const genrateToken = async (id: any) => {
+export const genrateTokenService = async (id: any) => {
     try {
         return await jwt.sign(
             { id },
