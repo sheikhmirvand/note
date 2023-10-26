@@ -10,6 +10,10 @@ export class FolderRepo {
         return Folder.findById(id);
     };
 
+    findSingleFolderByTitle = async (title: string) => {
+        return await Folder.findOne({ title });
+    };
+
     createFolder = async ({ title }: FOlderInterFace) => {
         return await Folder.create({ title });
     };
